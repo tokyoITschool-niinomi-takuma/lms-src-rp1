@@ -147,4 +147,34 @@ public class AttendanceUtil {
 		return false;
 	}
 
+	/**
+	 * 追記
+	 * 時間のプルダウン用マップの生成
+	 * @return 時
+	 */
+	public LinkedHashMap<Integer, String> getHourMap() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, null);
+		for (int i = 00; i < 24;) {
+			map.put(i, null);
+			i = i++;
+		}
+		return map;
+	}
+
+	/**
+	 * 追記
+	 * 分のプルダウン用マップ
+	 * @return 分
+	 */
+	public LinkedHashMap<Integer, String> getMinuteMap() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		map.put(null, null);
+		for (int i = 00; i < 60;) {
+			map.put(i, null);
+			i = i++;
+		}
+		return map;
+	}
+
 }

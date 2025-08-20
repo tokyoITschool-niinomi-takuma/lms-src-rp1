@@ -50,7 +50,7 @@ public class AttendanceController {
 		//サービスクラスから未入力情報を取得して保存
 		boolean notEnterCount = studentAttendanceService.notEnterCount();
 		model.addAttribute("notEnterCount", notEnterCount);
-		
+
 		return "attendance/detail";
 	}
 

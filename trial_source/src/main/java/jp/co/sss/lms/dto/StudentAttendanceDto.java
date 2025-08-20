@@ -30,5 +30,14 @@ public class StudentAttendanceDto {
 	private Integer blankTime;
 	/** 勤怠状態画面表示名 */
 	private String statusDispName;
+	
+	/** 追記：出勤時間（時）*/
+	private String trainingStartTimeHour;
+	/** 追記：出勤時間（分）*/
+	private String trainingStartTimeMinute;
+	/** 追記：退勤時間（時）*/
+	private String trainingEndTimeHour;
+	/** 追記：退勤時間（分）*/
+	private String trainingEndTimeMinute;
 
 }

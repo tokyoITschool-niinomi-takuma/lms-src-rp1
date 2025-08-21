@@ -55,7 +55,7 @@
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
 
-								<!-- 改修中 -->
+								<!-- ここからが出勤の表示 -->
 								<td class="w70">
 									<select th:name="|attendanceList[${stat.index}].trainingStartTime|"
 										class="form-control">
@@ -69,18 +69,35 @@
 								<td>
 									<select th:name="|attendanceList[${stat.index}].trainingStartTime|"
 										class="form-control">
-										<option th:each="trainingStartTime : ${attendanceForm.hourTimes}"
+										<option th:each="trainingStartTime : ${attendanceForm.minuteTimes}"
 											th:value="${trainingStartTime.key}" th:inline="text" class="form-control"
 											th:selected="${trainingStartTime.key == dailyAttendanceForm.trainingStartTimeMinute}">
 											[[${trainingStartTime.value}]]</option>
 									</select>
 								</td>
-								<!-- ここまでが出勤の表示-->
-
+								<!-- ここまでが出勤の表示 -->
+								<!-- ここからが退勤の表示 -->
 								<td class="w70">
-									<input type="text" th:name="|attendanceList[${stat.index}].trainingEndTime|"
-										th:value="${dailyAttendanceForm.trainingEndTime}" class="form-control" />
+									<select th:name="|attendanceList[${stat.index}].trainingEndTime|"
+										class="form-control">
+										<option th:each="trainingEndTime : ${attendanceForm.hourTimes}"
+											th:value="${trainingEndTime.key}" th:inline="text" class="form-control"
+											th:selected="${trainingEndTime.key == dailyAttendanceForm.trainingEndTimeHour}">
+											[[${trainingStartTime.value}]]</option>
+									</select>
 								</td>
+								<td>：</td>
+								<td>
+									<select th:name="|attendanceList[${stat.index}].trainingEndTime|"
+										class="form-control">
+										<option th:each="trainingEndTime : ${attendanceForm.minuteTimes}"
+											th:value="${trainingEndTime.key}" th:inline="text" class="form-control"
+											th:selected="${trainingEndTime.key == dailyAttendanceForm.trainingEndTimeMinute}">
+											[[${trainingStartTime.value}]]</option>
+									</select>
+								</td>
+								<!-- ここまでが退勤の表示 -->
+
 								<td class="w80">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"

@@ -179,14 +179,22 @@ public class AttendanceUtil {
 		return map;
 	}
 
-	/** 追記：時間の（時）の取り出し*/
+	/**
+	 * 追記：時間の（時）の取り出し
+	 * @param time
+	 * @return
+	 */
 	public Integer getHour(String time) {
 		Integer hour = Integer.parseInt(time);
 		Integer startHour = hour / 60;
 		return startHour;
 	}
 
-	/** 追記：時間の（分）の取り出し*/
+	/**
+	 *  追記：時間の（分）の取り出し
+	 * @param time
+	 * @return
+	 */
 	public Integer getMinute(String time) {
 		Integer minute = Integer.parseInt(time);
 		Integer startMinute = minute % 60;

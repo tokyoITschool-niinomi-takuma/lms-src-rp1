@@ -244,10 +244,10 @@ public class StudentAttendanceService {
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
 
-		//追記 AttendanceUtilクラスから時間のマップ取得
-		attendanceForm.setHourTimes(attendanceUtil.getHourMap());
-		//追記 AttendanceUtilクラスから分のマップ取得
-		attendanceForm.setMinuteTimes(attendanceUtil.getMinuteMap());
+//		//追記 AttendanceUtilクラスから時間のマップ取得
+//		attendanceForm.setHourTimes(attendanceUtil.getHourMap());
+//		//追記 AttendanceUtilクラスから分のマップ取得
+//		attendanceForm.setMinuteTimes(attendanceUtil.getMinuteMap());
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -273,18 +273,18 @@ public class StudentAttendanceService {
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
 
-			/** 追記：出勤時間（時）*/
-			dailyAttendanceForm.setTrainingStartTimeHour(
-					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime())));
-			/** 追記：出勤時間（分）*/
-			dailyAttendanceForm.setTrainingStartTimeMinute(
-					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime())));
-			/** 追記：退勤時間（時）*/
-			dailyAttendanceForm.setTrainingEndTimeHour(
-					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime())));
-			/** 追記：退勤時間（分）*/
-			dailyAttendanceForm.setTrainingEndTimeMinute(
-					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime())));
+//			/** 追記：出勤時間（時）*/
+//			dailyAttendanceForm.setTrainingStartTimeHour(
+//					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime())));
+//			/** 追記：出勤時間（分）*/
+//			dailyAttendanceForm.setTrainingStartTimeMinute(
+//					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime())));
+//			/** 追記：退勤時間（時）*/
+//			dailyAttendanceForm.setTrainingEndTimeHour(
+//					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime())));
+//			/** 追記：退勤時間（分）*/
+//			dailyAttendanceForm.setTrainingEndTimeMinute(
+//					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime())));
 
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());

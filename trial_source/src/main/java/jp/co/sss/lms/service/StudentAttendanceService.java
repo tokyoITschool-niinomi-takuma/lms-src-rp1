@@ -75,8 +75,7 @@ public class StudentAttendanceService {
 	}
 
 	/**
-	 * 8/15追記
-	 * 現在の日付より過去の未入力情報の取得と未入力があるかの判定
+	 * 追記：現在の日付より過去の未入力情報の取得と未入力があるかの判定
 	 * @param lmsUserId
 	 * @return
 	 * @throws ParseException
@@ -233,9 +232,10 @@ public class StudentAttendanceService {
 	 * 
 	 * @param attendanceManagementDtoList
 	 * @return 勤怠編集フォーム
+	 * @throws ParseException 
 	 */
 	public AttendanceForm setAttendanceForm(
-			List<AttendanceManagementDto> attendanceManagementDtoList) {
+			List<AttendanceManagementDto> attendanceManagementDtoList) throws ParseException {
 
 		AttendanceForm attendanceForm = new AttendanceForm();
 		attendanceForm.setAttendanceList(new ArrayList<DailyAttendanceForm>());
@@ -244,10 +244,10 @@ public class StudentAttendanceService {
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
 
-//		//追記 AttendanceUtilクラスから時間のマップ取得
-//		attendanceForm.setHourTimes(attendanceUtil.getHourMap());
-//		//追記 AttendanceUtilクラスから分のマップ取得
-//		attendanceForm.setMinuteTimes(attendanceUtil.getMinuteMap());
+		//追記 AttendanceUtilクラスから時間のマップ取得
+		attendanceForm.setHourTimes(attendanceUtil.getHourMap());
+		//追記 AttendanceUtilクラスから分のマップ取得
+		attendanceForm.setMinuteTimes(attendanceUtil.getMinuteMap());
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -273,18 +273,18 @@ public class StudentAttendanceService {
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
 
-//			/** 追記：出勤時間（時）*/
+//			//追記：出勤時間（時）
 //			dailyAttendanceForm.setTrainingStartTimeHour(
-//					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime())));
-//			/** 追記：出勤時間（分）*/
+//					attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime()));
+//			//追記：出勤時間（分）
 //			dailyAttendanceForm.setTrainingStartTimeMinute(
-//					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime())));
-//			/** 追記：退勤時間（時）*/
+//					attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime()));
+//			//追記：退勤時間（時）
 //			dailyAttendanceForm.setTrainingEndTimeHour(
-//					String.valueOf(attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime())));
-//			/** 追記：退勤時間（分）*/
+//					attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime()));
+//			//追記：退勤時間（分）
 //			dailyAttendanceForm.setTrainingEndTimeMinute(
-//					String.valueOf(attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime())));
+//					attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime()));
 
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());

@@ -10,8 +10,8 @@
 <body>
 	
 	
-	<!--8/15追記 勤怠未入力がある場合ポップアップ表示-->
-	<script th:inline="javascript">
+	<!-- 追記 勤怠未入力がある場合ポップアップ表示-->
+	<script>
 		window.onload = function () {
 			let notEnterCount = "[[${notEnterCount}]]";
 			if (notEnterCount === 'true') {

@@ -148,33 +148,29 @@ public class AttendanceUtil {
 	}
 
 	/**
-	 * 追記
-	 * 時間のプルダウン用マップの生成
+	 * 追記：時間のプルダウン用マップの生成
 	 * @return 時
 	 */
 	public LinkedHashMap<Integer, String> getHourMap() {
 		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 		map.put(null, null);
-		for (Integer i = 00; i < 24;) {
+		for (Integer i = 00; i < 24; i++) {
 			String time = i + "";
 			map.put(i, time);
-			i = i++;
 		}
 		return map;
 	}
 
 	/**
-	 * 追記
-	 * 分のプルダウン用マップの生成
+	 * 追記：分のプルダウン用マップの生成
 	 * @return 分
 	 */
 	public LinkedHashMap<Integer, String> getMinuteMap() {
 		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 		map.put(null, null);
-		for (int i = 00; i < 60;) {
+		for (int i = 00; i < 60; i++) {
 			String time = i + "";
 			map.put(i, time);
-			i = i++;
 		}
 		return map;
 	}
@@ -183,22 +179,29 @@ public class AttendanceUtil {
 	 * 追記：時間の（時）の取り出し
 	 * @param time
 	 * @return
+	 * @throws ParseException
 	 */
-	public Integer getHour(String time) {
-		Integer hour = Integer.parseInt(time);
-		Integer startHour = hour / 60;
-		return startHour;
-	}
 
-	/**
-	 *  追記：時間の（分）の取り出し
-	 * @param time
-	 * @return
-	 */
-	public Integer getMinute(String time) {
-		Integer minute = Integer.parseInt(time);
-		Integer startMinute = minute % 60;
-		return startMinute;
-	}
+//		public Integer getHour(String time) throws ParseException {
+//			SimpleDateFormat sdFormat = new SimpleDateFormat("HH:MM");
+//			Date date = sdFormat.parse(time);
+//			String hourOnly = new SimpleDateFormat("HH").format(date);
+//			Integer hour = Integer.parseInt(hourOnly);
+//			return hour;
+//		}
+//
+//	/**
+//	 * 追記：時間の（分）の取り出し
+//	 * @param time
+//	 * @return
+//	 * @throws ParseException
+//	 */
+//		public Integer getMinute(String time) throws ParseException {
+//			SimpleDateFormat sdFormat = new SimpleDateFormat("HH:MM");
+//			Date date = sdFormat.parse(time);
+//			String minuteOnly = new SimpleDateFormat("MM").format(date);
+//			Integer minute = Integer.parseInt(minuteOnly);
+//			return minute;
+//		}
 
 }

@@ -104,7 +104,7 @@
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
 
-<!-- 8/15追記 勤怠未入力情報取得のSQL-->
+<!-- 追記 勤怠未入力情報取得のSQL-->
 	<select id="notEnterCount"
 		parameterType="jp.co.sss.lms.entity.TStudentAttendance"
 		resultType="Integer">

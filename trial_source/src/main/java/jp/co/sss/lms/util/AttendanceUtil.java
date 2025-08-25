@@ -1,6 +1,7 @@
 package jp.co.sss.lms.util;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
@@ -149,13 +150,13 @@ public class AttendanceUtil {
 
 	/**
 	 * 追記：時間のプルダウン用マップの生成
-	 * @return 時
+	 * @return 時プルダウン
 	 */
 	public LinkedHashMap<Integer, String> getHourMap() {
 		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 		map.put(null, null);
 		for (Integer i = 00; i < 24; i++) {
-			String time = i + "";
+			String time = String.format("%02d", i);
 			map.put(i, time);
 		}
 		return map;
@@ -163,13 +164,13 @@ public class AttendanceUtil {
 
 	/**
 	 * 追記：分のプルダウン用マップの生成
-	 * @return 分
+	 * @return 分プルダウン
 	 */
 	public LinkedHashMap<Integer, String> getMinuteMap() {
 		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
 		map.put(null, null);
 		for (int i = 00; i < 60; i++) {
-			String time = i + "";
+			String time = String.format("%02d", i);
 			map.put(i, time);
 		}
 		return map;
@@ -178,30 +179,36 @@ public class AttendanceUtil {
 	/**
 	 * 追記：時間の（時）の取り出し
 	 * @param time
-	 * @return
+	 * @return 出退勤時間の（時）
 	 * @throws ParseException
 	 */
 
-//		public Integer getHour(String time) throws ParseException {
-//			SimpleDateFormat sdFormat = new SimpleDateFormat("HH:MM");
-//			Date date = sdFormat.parse(time);
-//			String hourOnly = new SimpleDateFormat("HH").format(date);
-//			Integer hour = Integer.parseInt(hourOnly);
-//			return hour;
-//		}
-//
-//	/**
-//	 * 追記：時間の（分）の取り出し
-//	 * @param time
-//	 * @return
-//	 * @throws ParseException
-//	 */
-//		public Integer getMinute(String time) throws ParseException {
-//			SimpleDateFormat sdFormat = new SimpleDateFormat("HH:MM");
-//			Date date = sdFormat.parse(time);
-//			String minuteOnly = new SimpleDateFormat("MM").format(date);
-//			Integer minute = Integer.parseInt(minuteOnly);
-//			return minute;
-//		}
+	public Integer getHour(String time) throws ParseException {
+		if (time == null || time.trim().isEmpty()) {
+			return null;
+		}
+		SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
+		Date date = sdFormat.parse(time);
+		String hourOnly = new SimpleDateFormat("HH").format(date);
+		Integer hour = Integer.parseInt(hourOnly);
+		return hour;
+	}
+
+	/**
+	 * 追記：時間の（分）の取り出し
+	 * @param time
+	 * @return 出退勤時間の（分）
+	 * @throws ParseException
+	 */
+	public Integer getMinute(String time) throws ParseException {
+		if (time == null || time.trim().isEmpty()) {
+			return null;
+		}
+		SimpleDateFormat sdFormat = new SimpleDateFormat("HH:mm");
+		Date date = sdFormat.parse(time);
+		String minuteOnly = new SimpleDateFormat("mm").format(date);
+		Integer minute = Integer.parseInt(minuteOnly);
+		return minute;
+	}
 
 }

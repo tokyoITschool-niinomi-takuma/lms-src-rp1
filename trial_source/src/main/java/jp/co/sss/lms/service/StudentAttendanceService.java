@@ -77,7 +77,7 @@ public class StudentAttendanceService {
 	/**
 	 * 追記：現在の日付より過去の未入力情報の取得と未入力があるかの判定
 	 * @param lmsUserId
-	 * @return
+	 * @return 勤怠の未入力情報の判定
 	 * @throws ParseException
 	 */
 	public boolean notEnterCount() throws ParseException {
@@ -273,18 +273,18 @@ public class StudentAttendanceService {
 						attendanceUtil.calcBlankTime(attendanceManagementDto.getBlankTime())));
 			}
 
-//			//追記：出勤時間（時）
-//			dailyAttendanceForm.setTrainingStartTimeHour(
-//					attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime()));
-//			//追記：出勤時間（分）
-//			dailyAttendanceForm.setTrainingStartTimeMinute(
-//					attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime()));
-//			//追記：退勤時間（時）
-//			dailyAttendanceForm.setTrainingEndTimeHour(
-//					attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime()));
-//			//追記：退勤時間（分）
-//			dailyAttendanceForm.setTrainingEndTimeMinute(
-//					attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime()));
+			//追記：出勤時間（時）
+			dailyAttendanceForm.setTrainingStartTimeHour(
+					attendanceUtil.getHour(attendanceManagementDto.getTrainingStartTime()));
+			//追記：出勤時間（分）
+			dailyAttendanceForm.setTrainingStartTimeMinute(
+					attendanceUtil.getMinute(attendanceManagementDto.getTrainingStartTime()));
+			//追記：退勤時間（時）
+			dailyAttendanceForm.setTrainingEndTimeHour(
+					attendanceUtil.getHour(attendanceManagementDto.getTrainingEndTime()));
+			//追記：退勤時間（分）
+			dailyAttendanceForm.setTrainingEndTimeMinute(
+					attendanceUtil.getMinute(attendanceManagementDto.getTrainingEndTime()));
 
 			dailyAttendanceForm.setStatus(String.valueOf(attendanceManagementDto.getStatus()));
 			dailyAttendanceForm.setNote(attendanceManagementDto.getNote());
@@ -301,6 +301,19 @@ public class StudentAttendanceService {
 	}
 
 	/**
+	 * 受け取った時間を0付きで表示する処理
+	 * @param hour
+	 * @param minute
+	 * @return 受け取った（時）と（分）を合体
+	 */
+	public static String formatTime(Integer hour, Integer minute) {
+		if (hour == null || minute == null) {
+			return "";
+		}
+		return String.format("%02d:%02d", hour, minute);
+	}
+
+	/**
 	 * 勤怠登録・更新処理
 	 * 
 	 * @param attendanceForm
@@ -308,6 +321,14 @@ public class StudentAttendanceService {
 	 * @throws ParseException
 	 */
 	public String update(AttendanceForm attendanceForm) throws ParseException {
+
+		//追記：出退勤時間をHH:mmで表示
+		for (DailyAttendanceForm dailyAttendanceFormTime : attendanceForm.getAttendanceList()) {
+			dailyAttendanceFormTime.setTrainingStartTime(formatTime(dailyAttendanceFormTime.getTrainingStartTimeHour(),
+					dailyAttendanceFormTime.getTrainingStartTimeMinute()));
+			dailyAttendanceFormTime.setTrainingEndTime(formatTime(dailyAttendanceFormTime.getTrainingEndTimeHour(),
+					dailyAttendanceFormTime.getTrainingEndTimeMinute()));
+		}
 
 		Integer lmsUserId = loginUserUtil.isStudent() ? loginUserDto.getLmsUserId()
 				: attendanceForm.getLmsUserId();
@@ -375,6 +396,7 @@ public class StudentAttendanceService {
 		}
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
+
 	}
 
 }

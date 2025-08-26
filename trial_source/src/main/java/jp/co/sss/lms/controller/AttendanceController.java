@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.validation.Valid;
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
@@ -46,7 +47,7 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-		
+
 		// 追記：サービスクラスから未入力情報を取得して保存
 		boolean notEnterCount = studentAttendanceService.notEnterCount();
 		model.addAttribute("notEnterCount", notEnterCount);
@@ -111,7 +112,7 @@ public class AttendanceController {
 	 * @return 勤怠情報直接変更画面
 	 */
 	@RequestMapping(path = "/update")
-	public String update(Model model) throws ParseException{
+	public String update(Model model) throws ParseException {
 
 		// 勤怠管理リストの取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
@@ -134,11 +135,10 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(@Valid AttendanceForm attendanceForm, Model model, BindingResult result)
 			throws ParseException {
-
 		// 更新
-		String message = studentAttendanceService.update(attendanceForm);
+		String message = studentAttendanceService.update(attendanceForm, result);
 		model.addAttribute("message", message);
 		// 一覧の再取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService

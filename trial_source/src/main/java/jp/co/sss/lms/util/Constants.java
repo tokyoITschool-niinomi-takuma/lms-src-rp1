@@ -155,6 +155,8 @@ public interface Constants {
 	public static final String VALID_KEY_WORK24TIME = "work24Time";
 	public static final String VALID_KEY_LOGINDATA_GET_FAILED = "logindata.getFailed";
 	public static final String VALID_KEY_PASSWORD_UPDATE_FAILED = "password.updateFailed";
+	//追記：出退勤時間のエラーメッセージ表示用
+//	public static final String VALID_KEY_INPUT_INVALID = "input.invalid";
 
 	// message.propertyのリソースキー
 	public static final String PROP_KEY_MAIL_CONTRACT_SUBJECT = "mail.contract.subject";

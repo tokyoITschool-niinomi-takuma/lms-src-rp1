@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
@@ -320,7 +321,7 @@ public class StudentAttendanceService {
 	 * @return 完了メッセージ
 	 * @throws ParseException
 	 */
-	public String update(AttendanceForm attendanceForm) throws ParseException {
+	public String update(AttendanceForm attendanceForm, BindingResult result) throws ParseException {
 
 		//追記：出退勤時間をHH:mmで表示
 		for (DailyAttendanceForm dailyAttendanceFormTime : attendanceForm.getAttendanceList()) {
@@ -329,6 +330,17 @@ public class StudentAttendanceService {
 			dailyAttendanceFormTime.setTrainingEndTime(formatTime(dailyAttendanceFormTime.getTrainingEndTimeHour(),
 					dailyAttendanceFormTime.getTrainingEndTimeMinute()));
 		}
+//		//追記：入力チェックの処理
+//		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
+//			if (dailyAttendanceForm.getNote().length() > 10) {
+//				result.addError(new FieldError(result.getObjectName(), "errorNote",
+//						messageUtil.getMessage(Constants.VALID_KEY_MAXLENGTH)));
+//			}
+//			if (dailyAttendanceForm.getTrainingStartTimeHour() == null
+//					|| dailyAttendanceForm.getTrainingStartTimeMinute() == null) {
+//				result.addError(new FieldError(result.getObjectName(),"errorTrainingStartTime",messageUtil.getMessage(Constants.VALID_KEY_INPUT_INVALID)));
+//			}
+//		}
 
 		Integer lmsUserId = loginUserUtil.isStudent() ? loginUserDto.getLmsUserId()
 				: attendanceForm.getLmsUserId();

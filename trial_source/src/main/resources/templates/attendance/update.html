@@ -11,7 +11,11 @@
 	<th:block th:if="${session.loginUserDto.role == '0001'}">
 		<h2>勤怠管理</h2>
 	</th:block>
-
+	<table th:if="${validationError}">
+		<tr th:each="error : ${validationError}">
+			<td th:text=" '*'+ ${error}" class="help-inline error"></td>
+		</tr>
+	</table>
 	<th:block th:if="${session.loginUserDto.role != '0001'}">
 		<h2>勤怠管理 <small>( [[${attendanceForm.userName}]] )</small></h2>
 		<th:block th:if="${session.loginUserDto.leaveFlg == '1'}">
@@ -30,7 +34,7 @@
 							<th class="w300">コース内容</th>
 							<th class="w200">出勤</th>
 							<th class="w200">退勤</th>
-							<th class="w80">中抜け時間</th>
+							<th class="w120">中抜け時間</th>
 							<th class="w70">ステータス</th>
 							<th class="w240">備考</th>
 						</tr>
@@ -94,7 +98,7 @@
 								</td>
 								<!-- ここまでが退勤の表示 -->
 
-								<td class="w80">
+								<td class="w120">
 									<select th:name="|attendanceList[${stat.index}].blankTime|" class="form-control">
 										<option th:each="blankTime : ${attendanceForm.blankTimes}"
 											th:value="${blankTime.key}" th:inlne="text" class="form-control"
@@ -106,20 +110,22 @@
 								<td class="w240">
 									<input type="text" th:name="|attendanceList[${stat.index}].note|"
 										th:value="${dailyAttendanceForm.note}" class="form-control"></input>
+
 								</td>
 							</tr>
 						</th:block>
 					</tbody>
 				</table>
 
-				<div class="form-group">
+				<div class=" form-group">
 					<th:block th:if="${session.loginUserDto.role == '0001'}">
 						<a th:href="@{/attendance/detail}" class="btn btn-default">戻る</a>
 					</th:block>
 					<th:block th:if="${session.loginUserDto.role != '0001'}">
 						<input type="submit" value="戻る" name="indexCompany" class="btn btn-default" />
 					</th:block>
-					<input type="submit" value="更新" name="complete" class="btn btn-info" onclick="return registCheck();"/>
+					<input type="submit" value="更新" name="complete" class="btn btn-info"
+						onclick="return registCheck();" />
 				</div>
 
 				<script>
@@ -127,9 +133,7 @@
 						if (confirm("更新します。よろしいですか？")) {
 							return true;
 						}
-						else {
-							return false;
-						}
+						return false;
 					}
 				</script>
 

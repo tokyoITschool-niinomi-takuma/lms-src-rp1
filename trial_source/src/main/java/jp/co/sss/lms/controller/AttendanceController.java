@@ -1,12 +1,15 @@
 package jp.co.sss.lms.controller;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -135,7 +138,7 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(@Valid AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(@Valid @ModelAttribute AttendanceForm attendanceForm, Model model, BindingResult result)
 			throws ParseException {
 		// 更新
 		String message = studentAttendanceService.update(attendanceForm, result);
@@ -144,6 +147,18 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
+		//追記：もし入力チェックでエラーがある場合
+		if (result.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+			for (ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+				//追記： 勤怠フォームの生成
+			}
+			attendanceForm = studentAttendanceService.setAttendanceForm(attendanceManagementDtoList);
+			model.addAttribute("attendanceForm", attendanceForm);
+			model.addAttribute("validationError", errorList);
+			return "attendance/update";
+		}
 
 		return "attendance/detail";
 	}

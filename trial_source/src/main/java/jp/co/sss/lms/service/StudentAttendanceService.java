@@ -2,6 +2,8 @@ package jp.co.sss.lms.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -354,28 +356,42 @@ public class StudentAttendanceService {
 				result.addError(new FieldError(result.getObjectName(), "errorTrainingEndTime",
 						messageUtil.getMessage(Constants.INPUT_INVALID, new String[] { endTime })));
 			}
-//			//追記：出勤に入力がなく、退勤に入力がある場合
-//			if (dailyAttendanceForm.getTrainingStartTime() == null
-//					&& dailyAttendanceForm.getTrainingEndTime().equals(dailyAttendanceForm.getTrainingEndTime())) {
-//				result.addError((new FieldError(result.getObjectName(), "errorPunchInEmpty",
-//						messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_PUNCHINEMPTY))));
-//			}
-//			LocalTime startTime = LocalTime.of(Integer.valueOf(dailyAttendanceForm.getTrainingStartTimeHour()),
-//					Integer.valueOf(dailyAttendanceForm.getTrainingStartTimeMinute()));
-//			LocalTime endTime = LocalTime.of(Integer.valueOf(dailyAttendanceForm.getTrainingEndTimeHour()),
-//					Integer.valueOf(dailyAttendanceForm.getTrainingEndTimeMinute()));
-//						//追記：出勤時間が退勤時間を超えている場合（日付毎）
-//						if(startTime.isAfter(endTime)) {
-//							List<DailyAttendanceForm> trainingTimeRange = attendanceForm.getAttendanceList();
-//							result.addError((new FieldError(result.getObjectName(), "errortrainingTimeRange",
-//									messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE,new String[] {trainingTimeRange}))));
-//						}
-//			//追記：中抜け時間が勤務時間を超えている場合
-//			LocalTime blankTime = LocalTime.of(dailyAttendanceForm.getBlankTime(), 0);
-//			Duration duration = Duration.between(startTime, endTime);
-//			if(dailyAttendanceForm.getBlankTime() > duration {
-//			result.addError((new FieldError(result.getObjectName(), "errorattendance.blankTimeError",
-//					messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_BLANKTIMEERROR))));
+			//追記：出勤に入力がなく、退勤に入力がある場合
+			if (dailyAttendanceForm.getTrainingStartTimeHour() == null
+					|| dailyAttendanceForm.getTrainingStartTimeMinute() == null
+							&& dailyAttendanceForm.getTrainingEndTimeHour() != null
+							&& dailyAttendanceForm.getTrainingEndTimeMinute() != null) {
+				result.addError((new FieldError(result.getObjectName(), "errorPunchInEmpty",
+						messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_PUNCHINEMPTY))));
+			}
+			//追記：出退勤時間の（時）と（分）表記を普通の時間表記に変換
+			if (dailyAttendanceForm.getTrainingStartTimeHour() != null
+					&& dailyAttendanceForm.getTrainingStartTimeMinute() != null
+					&& dailyAttendanceForm.getTrainingEndTimeHour() != null
+					&& dailyAttendanceForm.getTrainingEndTimeMinute() != null) {
+				LocalTime startTime = LocalTime.of(Integer.valueOf(dailyAttendanceForm.getTrainingStartTimeHour()),
+						Integer.valueOf(dailyAttendanceForm.getTrainingStartTimeMinute()));
+				LocalTime endTime = LocalTime.of(Integer.valueOf(dailyAttendanceForm.getTrainingEndTimeHour()),
+						Integer.valueOf(dailyAttendanceForm.getTrainingEndTimeMinute()));
+				//追記：出勤時間が退勤時間を超えている場合（日付毎）（未完成）
+//				if (startTime.isAfter(endTime)) {
+//					Integer error = attendanceForm.getAttendanceList().size();
+//					String errorMessage = String.valueOf(error);
+//					result.addError(
+//							(new FieldError(result.getObjectName(), "attendanceTrainingTimeRange",
+//									messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_TRAININGTIMERANGE,
+//											new String[] { errorMessage }))));
+//				}
+				//追記：中抜け時間が勤務時間を超えている場合
+				if (dailyAttendanceForm.getBlankTime() != null) {
+					Duration blankTime = Duration.ofMinutes(dailyAttendanceForm.getBlankTime());
+					Duration duration = Duration.between(startTime, endTime);
+					if (blankTime.compareTo(duration) > 0) {
+						result.addError((new FieldError(result.getObjectName(), "errorAttendanceBlankTimeError",
+								messageUtil.getMessage(Constants.VALID_KEY_ATTENDANCE_BLANKTIMEERROR))));
+					}
+				}
+			}
 		}
 
 		Integer lmsUserId = loginUserUtil.isStudent() ? loginUserDto.getLmsUserId()
